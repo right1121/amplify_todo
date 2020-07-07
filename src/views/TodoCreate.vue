@@ -6,21 +6,23 @@
       @updateName="updateName"
       @updateDescription="updateDescription"
     />
-    <button>登録</button>
+    <button @click="create">登録</button>
   </div>
 </template>
 
 <script>
 import TodoForm from '@/components/TodoForm.vue'
+import { API } from 'aws-amplify'
+import { createTodo } from '@/graphql/mutations'
 
 export default {
   components: {
     TodoForm
   },
-  data: function () {
+  data() {
     return {
-      name: null,
-      description: null
+      name: '',
+      description: ''
     }
   },
   methods: {
@@ -30,6 +32,21 @@ export default {
     updateDescription(value) {
       this.description = value
     },
+    async create() {
+      const { name, description } = this
+
+      const todo = {
+        name,
+        description
+      }
+
+      await API.graphql({
+        query: createTodo,
+        variables: {input: todo}
+      })
+      this.name = ''
+      this.description = ''
+    }
   }
 }
 </script>
