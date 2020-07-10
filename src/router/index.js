@@ -21,6 +21,11 @@ Vue.use(VueRouter)
     component: () => import('@/views/TodoList.vue')
   },
   {
+    path: '/todo/:id',
+    name: 'Todo',
+    component: () => import('@/views/Todo.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
